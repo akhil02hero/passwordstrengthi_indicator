@@ -18,16 +18,10 @@ export default function Passwordform() {
     const [bgcolors, setBgcolors] = useState('');
     const [show, setShow] = useState(false);
 
-
-
-
-
-
-
     useEffect(() => {
         parameters.letters = (/[A-Z]+/.test(password)) ? true : false;
         parameters.numbers = (/[0-9]+/.test(password)) ? true : false;
-        parameters.special = (/[!\"$%&/()=?@~`\\.\';:+=^*_-]+/.test(password)) ? true : false;
+        parameters.special = (/[!\\"$%&/()=?@~`\\.\\';:+=^*_-]+/.test(password)) ? true : false;
         parameters.count = (password.length > 4) ? true : false;
         // console.log(parameters);
         const { count, numbers, letters, special } = parameters;
@@ -112,7 +106,7 @@ export default function Passwordform() {
                 <span className="txtclr">Password</span><span className="starclr">*</span>
                 <Card count={parameters.count} message={message} length={length} style={style()} style2={style2()} />
                 <input type={show ? "text" : "password"} name="password" onChange={checkpasswords} placeholder="Password " autoComplete="off" />
-                <i className={show ? "fa fa-eye-slash" : "fa fa-eye"} onClick={visible} aria-hidden="true"></i>
+                <i className={show ? "fa fa-eye" : "fa fa-eye-slash"} onClick={visible} aria-hidden="true"></i>
 
 
                 <div>
