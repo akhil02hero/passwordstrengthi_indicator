@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Card from './Card';
 import './Passwordform.css';
+
 // import './App.css'
 export default function Passwordform() {
 
@@ -14,45 +15,55 @@ export default function Passwordform() {
     const [password, setPassword] = useState("");
     const [length, setLength] = useState(0);
     const [message, setMessage] = useState("");
-    const [bgcolors, setBgcolors] = useState('')
+    const [bgcolors, setBgcolors] = useState('');
+    const [show, setShow] = useState(false);
+
+
+
+
+
+
 
     useEffect(() => {
         parameters.letters = (/[A-Z]+/.test(password)) ? true : false;
         parameters.numbers = (/[0-9]+/.test(password)) ? true : false;
         parameters.special = (/[!\"$%&/()=?@~`\\.\';:+=^*_-]+/.test(password)) ? true : false;
-        parameters.count = (password.length > 6) ? true : false;
+        parameters.count = (password.length > 4) ? true : false;
         // console.log(parameters);
         const { count, numbers, letters, special } = parameters;
         const strengthbar = () => {
             if (password.length <= 2) {
                 setMessage("")
+                setLength(0);
             }
             if (!count && password.length > 2) {
                 setLength(0.5);
-                setMessage("Too Low");
+                setMessage("Too weak");
+                setBgcolors("red");
+
             }
 
             if (count) {
                 setLength(1);
-                setMessage("Very Low");
-                setBgcolors("red");
+                setMessage("Weak");
+                setBgcolors("#DA3434");
                 // console.log(count, length, message);
             }
             if ((count && numbers) || (count && letters) || (count && special)) {
                 setLength(2);
-                setMessage("Low");
+                setMessage("Average");
                 setBgcolors("orange");
                 // console.log(count, length, message);
             }
             if ((count && numbers && letters) || (count && letters && special) || (count && numbers && special)) {
                 setLength(3);
-                setMessage("Good");
-                setBgcolors("yellow");
+                setMessage("Strong");
+                setBgcolors("blue");
                 // console.log(count, length, message);
             }
             if (count && numbers && special && letters && password.length >= 12) {
                 setLength(4);
-                setMessage("Better");
+                setMessage("Excellent");
                 setBgcolors("green");
                 // console.log(count, length, message);
             }
@@ -66,10 +77,14 @@ export default function Passwordform() {
 
 
 
+    const visible = () => {
+        setShow(!show);
+    }
 
     const checkpasswords = (e) => {
         console.log(password);
         setPassword(e.target.value);
+
     }
 
     // console.log(length);
@@ -80,14 +95,29 @@ export default function Passwordform() {
         borderRadius: '50px',
     })
 
+    const style2 = () => ({
+        fontSize: '10px',
+        position: 'absolute',
+        color: `${bgcolors}`,
+        top: '23px',
+        fontWeight: '900',
+        right: '35 %',
+    })
+
     return (
         <div>
             {/* logic comes here */}
 
             <div className="itstransparent">
-                <Card count={parameters.count} length={length} style={style()} />
-                <input type="text" name="password" onChange={checkpasswords} placeholder="Password " autoComplete="off" />
-                <h1 className="txt">{message}</h1>
+                <span className="txtclr">Password</span><span className="starclr">*</span>
+                <Card count={parameters.count} message={message} length={length} style={style()} style2={style2()} />
+                <input type={show ? "text" : "password"} name="password" onChange={checkpasswords} placeholder="Password " autoComplete="off" />
+                <i className={show ? "fa fa-eye-slash" : "fa fa-eye"} onClick={visible} aria-hidden="true"></i>
+
+
+                <div>
+                    <p className="para">Minimum of 6 characters,with upper and lower case and a number,or a symbol</p>
+                </div>
 
             </div>
 
